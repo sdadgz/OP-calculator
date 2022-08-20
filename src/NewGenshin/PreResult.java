@@ -6,7 +6,7 @@ public class PreResult {
 
     private static int[] delArr;
 
-    public static LinkList handler(LinkList linkList) {
+    public static void handler(LinkList linkList) {
         long startTime = System.currentTimeMillis();
         int outLength = Main.out.split(" ").length;
         int listLength = 1 << outLength;
@@ -39,11 +39,17 @@ public class PreResult {
         endTime = System.currentTimeMillis();
         long slow = endTime - startTime;
 
-        System.out.println("time：" + (fast - slow));
+        System.out.println("节省了多少毫秒呢：" + (fast - slow) + "ms。草，负优化");
+        System.out.println("==================================");
 
         assert conform;
 
-        return linkList;
+        // 删除冗余部分
+        for (int i = delArr.length - 1; i > 0; i--) {
+            if (delArr[i] > 0){
+                linkList.del(i);
+            }
+        }
     }
 
     private static void delAnd(int[] minMax) {

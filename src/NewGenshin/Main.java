@@ -4,23 +4,25 @@ import java.util.Arrays;
 
 public class Main {
     static int 白字攻击力 = 950;
-    static double 总攻击力 = 3063;
+    static double 总攻击力 = 2826;
     static int 白字生命值 = 15552;
-    static double 总生命值 = 27001;//
+    static double 总生命值 = 27001;
     static double 反应系数 = 1;
     static String panel = "暴击67.6 暴伤170 增伤83.3";
 
     // 881
-    static String out = "";
+    static String out = "小攻击881 攻击20 增伤30 攻击40 攻击18 增伤25";
     // 英文符号
-    static String outDel = "";
+    static String outDel = "1=2 5=6 3=6";
 
-    // 充能转化雷伤，panel写46.6或者0
-    static boolean 雷神被动 = false;
+
+    // 技能增幅默认10级
+    static boolean 雷神被动 = false; // 充能转化雷伤，把雷神下场后查看雷伤
     static boolean 绝缘4 = false;
     static boolean 胡桃e = false;
     static boolean 夜兰 = false;
-    static boolean 护魔 = false;
+    static boolean 护魔 = false; // 把胡桃下场后查看攻击力
+
 
     static boolean 展示圣遗物 = false;
     static boolean 展示最差 = false;
@@ -34,8 +36,8 @@ public class Main {
     };
     static String[] feather = {
             "暴击7 暴伤6.2 攻击26.8", // 优菈
-            "攻击9.3 暴击8.9",
             "攻击11.1 暴伤18.7 暴击7",
+            "攻击9.3 暴击8.9",
             "暴击9.7",
             "暴击17.9",
             "攻击5.3 暴伤14"
@@ -77,13 +79,13 @@ public class Main {
         System.out.println(resultLink);
 
         // 处理最好
-        resultLink = PreResult.handler(resultLink);
+        PreResult.handler(resultLink);
         result(resultLink);
 
         System.out.println("==========这里往下是最差=========");
         // 处理最差
         if (展示最差) {
-            worseLink = PreResult.handler(worseLink);
+            PreResult.handler(worseLink);
             result(worseLink);
         }
     }
@@ -97,8 +99,7 @@ public class Main {
         LinkList resultCount = new LinkList();
         while (p != null && p.data != null) {
 
-            System.out.println("106" + Arrays.toString(p.data));
-            System.out.println("107" + p.没暴击 + "::" + p.暴击了);
+            System.out.println("Main:106:康康所有数据" + Arrays.toString(p.data));
 
             if (p.data[0] > max[0]) { // 设置最大
                 max = p.data;
@@ -130,13 +131,15 @@ public class Main {
 
         p = resultCount;
 
-        System.out.println("==================================");
+        System.out.println("============这里往下才是需要看的=============");
         System.out.println("min:" + Arrays.toString(min));
         if (展示圣遗物) {
+            assert min != null;
             show(min);
         }
         System.out.println("max:" + Arrays.toString(max));
         if (展示圣遗物) {
+            assert max != null;
             show(max);
         }
         System.out.println("==================================");

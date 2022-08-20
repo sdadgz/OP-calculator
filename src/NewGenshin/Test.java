@@ -21,7 +21,7 @@ public class Test {
             } else if (str.contains("!")) {
                 delAnd(Math.simpleMinMax(str, outLength), arr);
             } else {
-                System.out.println("error");
+                System.out.println("Test:024:识别不到=或者!");
             }
         }
 
