@@ -8,18 +8,18 @@ public class People {
     private double 总生命;
 
     private int 小攻击;
-    private double 攻击;
+    double 攻击;
     private int 小生命;
-    private double 生命;
-    private double 暴击;
-    private double 暴伤;
+    double 生命;
+    double 暴击;
+    double 暴伤;
 
-    private double 防御;
+    double 防御;
     private int 小防御;
 
-    private double 增伤;
+    double 增伤;
     private int 精通;
-    private double 充能;
+    double 充能;
 
     private double 护魔;
 
@@ -74,6 +74,17 @@ public class People {
                 增伤 += temp;
             }
         }
+        if (Main.薙刀) {
+            double temp = 充能;
+            temp -= 100;
+            if (temp > 0) {
+                temp *= 0.28;
+                if (temp > 80) {
+                    temp = 80;
+                }
+                总攻击 += 白字攻击力 * (temp / 100);
+            }
+        }
 
         double b = 暴击 / 100;
         if (b >= 1) {
@@ -90,6 +101,16 @@ public class People {
         }
 
         double ans = 总攻击 * 暴击乘区 * 增伤乘区 * 反应乘区;
+
+        double 重击倍率 = 242.6;
+        double 一段倍率 = 83.6;
+        // 增加胡桃倍率判断
+        if (Main.胡桃e) {
+            double 第一段 = ans * 一段倍率 / 100 / 反应乘区;
+            ans *= 重击倍率 / 100;
+            ans += 第一段;
+        }
+
         int r = (int) (ans);
 
         double temp = r + 0.5;
