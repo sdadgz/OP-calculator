@@ -18,7 +18,7 @@ public class People {
     private int 小防御;
 
     double 增伤;
-    private int 精通;
+    int 精通;
     double 充能;
 
     private double 护魔;

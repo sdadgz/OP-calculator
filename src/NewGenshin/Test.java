@@ -6,6 +6,7 @@ public class Test {
 
     private static int[] resArr;
 
+    // 逻辑索引，大于0代表不合法
     public static boolean conform(int outLength, String[] strArr, int[] conformArr) {
 
         int[][] arr = initArr(outLength);
@@ -26,9 +27,7 @@ public class Test {
         }
 
         int[] transArr = new int[resArr.length + 1];
-        for (int i = 1; i < transArr.length; i++) {
-            transArr[i] = resArr[i - 1];
-        }
+        System.arraycopy(resArr, 0, transArr, 1, transArr.length - 1);
 
         System.out.println("============结果集==============");
         System.out.println(Arrays.toString(transArr));
@@ -42,6 +41,7 @@ public class Test {
         return true;
     }
 
+    // 不等于 同时为1加1
     private static void delAnd(int[] minMax, int[][] arr) {
         int min = minMax[0];
         int max = minMax[1];
@@ -51,9 +51,9 @@ public class Test {
                 resArr[i]++;
             }
         }
-
     }
 
+    // 等于 不等加1
     private static void delXOR(int[] minMax, int[][] arr) {
         int min = minMax[0];
         int max = minMax[1];

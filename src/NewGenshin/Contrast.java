@@ -2,12 +2,6 @@ package NewGenshin;
 
 public class Contrast {
 
-    public static final boolean 攻击 = true;
-    public static final boolean 暴击 = true;
-    public static final boolean 暴伤 = true;
-    public static final boolean 充能 = true;
-    public static final boolean 生命 = true;
-
     private People people;
 
     private String value;
@@ -34,37 +28,44 @@ public class Contrast {
     public boolean contrast(People people) {
         int all = 0;
         int count = 0;
-        if (攻击) {
+        if (Main.use攻击) {
             all++;
             if (people.攻击 <= this.people.攻击) {
                 count++;
             }
         }
 
-        if (暴击) {
+        if (Main.use暴击) {
             all++;
             if (people.暴击 <= this.people.暴击) {
                 count++;
             }
         }
 
-        if (暴伤) {
+        if (Main.use暴伤) {
             all++;
             if (people.暴伤 <= this.people.暴伤) {
                 count++;
             }
         }
 
-        if (充能) {
+        if (Main.use充能) {
             all++;
             if (people.充能 <= this.people.充能) {
                 count++;
             }
         }
 
-        if (生命) {
+        if (Main.use生命) {
             all++;
             if (people.生命 <= this.people.生命) {
+                count++;
+            }
+        }
+
+        if (Main.use精通) {
+            all++;
+            if (people.精通 <= this.people.精通) {
                 count++;
             }
         }

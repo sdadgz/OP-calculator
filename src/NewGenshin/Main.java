@@ -12,12 +12,12 @@ public class Main {
     static int 白字生命值 = 15552;
     static double 总生命值 = 27688;
     static double 反应系数 = 1;
-    static String panel = "暴击71.9 暴伤146.3 充能271.2 充能30 增伤27";
+    static String panel = "暴击71.9 暴伤146.3 精通310 护魔0.8 充能271.2 充能30";
 
-    // 881 [次数]![buff] 叠层
-    static String out = "攻击20 小攻击881 14!增伤3.5";
+    // 881 [次数]![buff] 叠层 todo 叠层有问题，重构吧改不了，耦合度太高了
+    static String out = "攻击20 小攻击881 护魔1 增伤33 增伤20";
     // 英文符号 = !
-    static String outDel = "1=2";
+    static String outDel = "1=2 3=4 3!4";
 
     // 技能增幅默认10级
     static boolean 雷神被动 = true; // 充能转化雷伤，把雷神下场后查看雷伤
@@ -27,79 +27,78 @@ public class Main {
     static boolean 护魔 = false; // 把胡桃下场后查看攻击力
     static boolean 薙刀 = true; // 把雷神下场后查看攻击力
 
-    static boolean 展示圣遗物 = true;
+    static boolean 展示圣遗物 = false;
     static boolean 展示最差 = false;
 
-    static boolean 圣遗物显示垃圾 = false;
+    static boolean 圣遗物显示垃圾 = true;
     static boolean showUppers = false; // debug用，展示垃圾为什么是垃圾
+
+    static int rubbishLength = 3; // 多少条以内算无用圣遗物
+    static boolean showSuggest = true; // 展示回收建议
+    static boolean suggestInput = true; // 输入判断该圣遗物是否值得升
+
+    public static final boolean use攻击 = true;
+    public static final boolean use暴击 = true;
+    public static final boolean use暴伤 = true;
+    public static final boolean use充能 = true;
+    public static final boolean use生命 = true;
+    public static final boolean use精通 = false;
 
     static String[] flower = {
             "小攻击35 暴击7.8 暴伤19.4 攻击5.8", // 雷神
+            "生命4.1 小防御32 暴伤18.7 攻击12.8",
+            "攻击8.2 暴击7.4 小防御62 充能11",
+            "暴击7.4 生命14.6 暴伤5.4 小防御56",
+            "暴伤19.4 小攻击18 暴击9.3 防御5.1",
             "暴伤14 暴击9.3 小防御23 攻击9.3",
             "精通16 攻击16.3 暴击8.9 小攻击39",
-            "攻击4.7 暴击9.3 小防御76 小攻击18",
-            "攻击8.2 暴击7.4 小防御62 充能11",
-            "小攻击18 小防御39 暴伤18.7 精通51",
-            "暴击7.4 生命14.6 暴伤5.4 小防御56",
-            "暴击2.7 防御20.4 暴伤12.4 充能9.1",
             "暴伤14 小防御39 暴击3.9 生命15.7",
-            "暴伤19.4 小攻击18 暴击9.3 防御5.1",
+            "暴击2.7 防御20.4 暴伤12.4 充能9.1",
             "暴击11.3 生命9.9 攻击4.7 精通42",
-            "生命4.1 小防御32 暴伤18.7 攻击12.8"
     };
     static String[] feather = {
             "攻击5.8 暴击15.6 暴伤14 小生命269", // 雷神
-            "暴击13.6 小防御23 小生命448 攻击9.9",
-            "小防御58 攻击15.2 暴伤5.4 暴击6.6",
-            "暴伤27.2 精通21 充能6.5 小防御65",
-            "小生命269 暴伤22.5 精通61 暴击7.4",
             "暴伤12.4 防御16.8 小防御42 充能11.7",
-            "小防御16 暴击6.2 攻击15.2 生命8.2",
-            "小防御19 充能11 暴伤18.7 小生命508",
-            "暴击6.6 小防御19 暴伤14 精通63",
+            "暴击13.6 小防御23 小生命448 攻击9.9",
+            "暴伤27.2 精通21 充能6.5 小防御65",
             "攻击9.9 精通21 暴伤29.5 小防御23",
+            "小生命269 暴伤22.5 精通61 暴击7.4",
+            "充能16.8 暴伤6.2 小生命448 攻击9.3",
+            "小防御58 攻击15.2 暴伤5.4 暴击6.6",
             "暴伤21 暴击9.3 精通19 充能5.8",
-            "充能16.8 暴伤6.2 小生命448 攻击9.3"
+            "小防御19 充能11 暴伤18.7 小生命508",
+            "小防御16 暴击6.2 攻击15.2 生命8.2",
     };
     static String[] hourglass = {
             "充能51.8 暴伤27.2 小攻击19 精通42 暴击2.7", // 雷神
             "攻击46.6 小防御46 暴击13.6 暴伤12.4 小攻击16",
-            "充能51.8 暴伤13.2 小防御60 小生命269 防御12.4",
-            "充能51.8 小防御16 生命15.7 暴击5.8 攻击14.6",
             "充能51.8 攻击19.8 生命10.5 防御7.3 小攻击37",
-            "充能51.8 小攻击14 攻击4.1 小生命1195 生命9.9",
-            "充能51.8 小防御21 防御13.9 暴伤21 生命9.9",
-            "充能51.8 暴击5.8 攻击11.1 小防御37 防御13.9",
-            "充能51.8 攻击9.3 生命5.8 小攻击33 小生命717",
-            "攻击46.6 暴击5.8 生命13.4 防御10.2 精通35",
-            "攻击46.6 暴伤12.4 暴击6.2 小攻击37 防御11.7",
-            "生命46.6 攻击5.8 小防御42 暴击8.9 小攻击35",
             "生命46.6 暴伤7 小生命657 小攻击14 暴击8.2",
+            "生命46.6 攻击5.8 小防御42 暴击8.9 小攻击35",
+            "充能51.8 小防御16 生命15.7 暴击5.8 攻击14.6",
+            "充能51.8 小防御21 防御13.9 暴伤21 生命9.9",
+            "攻击46.6 暴击5.8 生命13.4 防御10.2 精通35",
     };
     static String[] cup = {
             "攻击46.6 暴伤15.5 小生命269 暴击9.7 充能12.3", // 雷神
-            "增伤46.6 暴击6.2 暴伤17.1 小生命418 精通33",
             "增伤46.6 小生命508 攻击9.3 暴击5.8 防御14.6",
-            "增伤46.6 小生命747 精通21 攻击4.1 小攻击43",
-            "增伤46.6 小防御37 暴击3.1 小生命807 防御19",
-            "攻击46.6 小生命568 生命5.3 暴伤26.4 暴击6.6",
-            "攻击46.6 小攻击14 生命18.1 精通47 充能10.4",
-            "攻击46.6 小生命807 精通47 小防御16 充能10.4",
-            "攻击46.6 暴击10.5 小攻击47 充能9.7 小生命209",
-            "攻击46.6 小生命478 暴击7 充能5.8 暴伤20.2",
-            "攻击46.6 防御15.3 暴伤5.4 暴击13.2 充能4.5",
-            "攻击46.6 小生命418 暴伤13.2 暴击10.1 生命4.1",
-            "攻击46.6 暴击6.2 小防御56 暴伤18.7 精通19",
             "攻击46.6 暴击10.9 小防御19 暴伤19.4 生命5.3",
+            "攻击46.6 小生命568 生命5.3 暴伤26.4 暴击6.6",
+            "攻击46.6 暴击10.5 小攻击47 充能9.7 小生命209",
+            "攻击46.6 小攻击14 生命18.1 精通47 充能10.4",
+            "增伤46.6 暴击6.2 暴伤17.1 小生命418 精通33",
+            "攻击46.6 防御15.3 暴伤5.4 暴击13.2 充能4.5",
+            "攻击46.6 小生命478 暴击7 充能5.8 暴伤20.2",
     };
     static String[] head = {
             "暴击31.1 精通21 小攻击37 暴伤20.2 攻击10.5", // 雷神
-            "暴击31.1 小防御37 小生命1225 充能5.2 防御6.6",
-            "暴击31.1 小攻击29 小防御19 暴伤14 充能16.8",
             "暴击31.1 精通21 生命15.7 充能6.5 小生命866",
-            "暴伤62.2 暴击9.7 小攻击16 攻击10.5",
-            "攻击46.6 暴击6.2 防御14.6 小攻击54 小生命209",
+            "暴伤62.2 防御11.7 暴击9.7 小攻击16 攻击10.5",
+            "暴击31.1 小攻击29 小防御19 暴伤14 充能16.8",
     };
+
+    // 圣遗物垃圾显示时带索引
+    static int count = 1;
 
     public static void main(String[] args) {
         // 初始化空圣遗物面板
@@ -112,30 +111,54 @@ public class Main {
         LinkList worseLink = new LinkList();
         new Main().addOut(p0, new People(), resultLink, worseLink, 0);
 
-        System.out.println(resultLink);
-
         // 处理最好
         PreResult.handler(resultLink);
         result(resultLink);
 
         // 处理最差
-        System.out.println("==========这里往下是最差=========");
         if (展示最差) {
+            System.out.println("==========这里往下是最差=========");
             PreResult.handler(worseLink);
             result(worseLink);
         }
 
-        // todo 显示垃圾圣遗物
-        System.out.println("=================这里是显示垃圾圣遗物==================");
+        // 显示垃圾圣遗物
         if (圣遗物显示垃圾) {
+            System.out.println("=================这里是显示垃圾圣遗物==================");
             absolutelyRubbish(flower);
             absolutelyRubbish(feather);
             absolutelyRubbish(hourglass);
             absolutelyRubbish(cup);
             absolutelyRubbish(head);
         }
+
+        // 展示建议删除
+        if (showSuggest) {
+            count = 1;
+
+            System.out.println(count++);
+            Suggest.suggest(flower);
+
+            System.out.println(count++);
+            Suggest.suggest(feather);
+
+            System.out.println(count++);
+            Suggest.suggest(hourglass);
+
+            System.out.println(count++);
+            Suggest.suggest(cup);
+
+            System.out.println(count++);
+            Suggest.suggest(head);
+        }
+
+        // 展示建议是否升级
+        if (suggestInput) {
+            Suggest.inputSuggest();
+        }
     }
 
+    // 找到垃圾圣遗物
     private static void absolutelyRubbish(String[] arr) {
         Set<String> lowers = new HashSet<>(arr.length);
         Set<String> uppers = new HashSet<>(arr.length);
@@ -155,14 +178,26 @@ public class Main {
                 }
             }
         }
-        System.out.println("结果集大小：" + lowers.size());
+
+        System.out.println("=========结果集 " + count++ + " 大小：" + lowers.size());
         for (String lower : lowers) {
             System.out.println(lower);
         }
+
         if (showUppers) {
             System.out.println("大于他的集合：" + uppers.size());
             for (String upper : uppers) {
                 System.out.println(upper);
+            }
+        }
+
+        // 去掉垃圾之后的集合
+        if (lowers.size() != 0) {
+            System.out.println("**************去掉垃圾之后的结果集*************");
+            Set<String> res = new HashSet<>(Arrays.asList(arr));
+            res.removeAll(lowers);
+            for (String r : res) {
+                System.out.println("\"" + r + "\",");
             }
         }
     }
@@ -177,7 +212,7 @@ public class Main {
         LinkList resultCount = new LinkList();
         while (p != null && p.data != null) {
 
-            System.out.println("Main:106:康康所有数据" + Arrays.toString(p.data));
+//            System.out.println("Main:106:康康所有数据" + Arrays.toString(p.data));
 
             if (p.data[0] > max[0]) { // 设置最大
                 max = p.data;
@@ -251,7 +286,7 @@ public class Main {
             return;
         }
 
-        // todo 新增带计数的
+        // todo 新增带计数的，有bug
         if (str.contains("!")) {
             String[] split = str.split("!");
             int count = Integer.parseInt(split[0]);
